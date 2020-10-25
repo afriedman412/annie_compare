@@ -49,42 +49,44 @@ if __name__ == "__main__":
     local_list = []
 
     for k, v in local_dict.items():
-        for root, dirs, files in os.walk(k):
-            for f_ in files:
-                size_match = False
-                found = True
-                remote_size = ''
+        for ext in ['/FOOTAGE', '/AUDIO']:
+            for root, dirs, files in os.walk(k + ext):
+                for f_ in files:
+                    size_match = False
+                    found = True
+                    remote_size = ''
 
-                local_path = '/'.join([root, f_])
-                remote_path = local_path.replace(k, v)
-                if v == '2018':
-                    remote_path.replace('AUDIO/', 'AUDIO/RECORDED/')
+                    local_path = '/'.join([root, f_])
+                    remote_path = local_path.replace(k, v)
+                    if v == '2018':
+                        remote_path.replace('AUDIO/', 'AUDIO/RECORDED/')
 
-                year = v
-                local_size = os.stat(local_path).st_size
+                    year = v
+                    local_size = os.stat(local_path).st_size
 
-                print(local_path)
-                print(remote_path)
+                    print(local_path)
+                    print(remote_path)
 
-                try:
-                    remote_size = har_dict[v][remote_path]
-                except KeyError:
-                    pass
-                    found = False
+                    try:
+                        remote_size = har_dict[v][remote_path]
+                    except KeyError:
+                        found = False
+                        pass
+                        
 
-                if remote_size == local_size:
-                    size_match = True
+                    if remote_size == local_size:
+                        size_match = True
 
-                local_list.append({
-                    'year': year,
-                    'file_name': local_path.split('/')[-1],
-                    'local_path': local_path,
-                    'remote_path': remote_path,
-                    'file_found': found,
-                    'local_size': local_size,
-                    'remote_size': remote_size,
-                    'size_match': size_match
-                })
+                    local_list.append({
+                        'year': year,
+                        'file_name': local_path.split('/')[-1],
+                        'local_path': local_path,
+                        'remote_path': remote_path,
+                        'file_found': found,
+                        'local_size': local_size,
+                        'remote_size': remote_size,
+                        'size_match': size_match
+                    })
 
 
     print('outputting csv...')
