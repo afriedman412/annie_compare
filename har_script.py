@@ -2,7 +2,7 @@ import sys
 import json
 import os
 
-def createHarDict()
+def createHarDict():
     har_dict = {}
     root = './har_files/'
     for har in os.listdir(root):
@@ -25,13 +25,16 @@ def createHarDict()
     return har_dict
 
 
-drive_dict = {
+
+if __name__ == "__main__":
+
+    drive_dict = {
     '2018': "/WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2/",
     '2019': '/WHOS ANNIE_PILOT_08-2019/SHOOT 3/',
     '2020': '/WA0920 main/WHOS ANNIE PILOT/'
 }
 
-if __name__ == "__main__":
+    har_dict = createHarDict()
 
     for k_ in drive_dict:
         print(k_)
