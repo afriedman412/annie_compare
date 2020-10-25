@@ -55,7 +55,7 @@ if __name__ == "__main__":
                 found = True
                 remote_size = ''
 
-                local_path = '/'.join([path, f_])
+                local_path = '/'.join([root, f_])
                 remote_path = local_path.replace(local_dict, v)
                 if v == '2018':
                     remote_path.replace('AUDIO/', 'AUDIO/RECORDED/')
