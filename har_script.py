@@ -45,6 +45,8 @@ if __name__ == "__main__":
         print(k_)
         for k,v in har_dict[k_].items():
             path_ = "/volumes" + k.replace(k_, drive_dict[k_])
+            if k_ == '2018':
+                path_ = path_.replace('RECORDED/', '')
             # print(path_)
             size_match = False
             found = False
@@ -74,7 +76,7 @@ if __name__ == "__main__":
                 'remote_size': v,
                 'size_match': size_match
             }
-            
+
             out_list.append(listo)
 
             print('--')
