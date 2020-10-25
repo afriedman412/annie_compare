@@ -2,7 +2,7 @@ import sys
 import json
 import os
 
-def createHarDict():
+def createHarDict(verbose=False):
     har_dict = {}
     root = './har_files/'
     for har in os.listdir(root):
@@ -13,10 +13,12 @@ def createHarDict():
         h = json.load(open(root + har, 'rb'))
         for n, l in enumerate(h['log']['entries']):
             if 'https://rmwhosannie.mediashuttle.com/REST/v4.0/portal/' in l['request']['url']:
-                print(n)
+                if verbose:
+                    print(n)
                 try:
                     for file in json.loads(l['response']['content']['text'])['teamspaceFiles']:
-                        print(file['fullPath'], file['size'])
+                        if verbose:
+                            print(file['fullPath'], file['size'])
                         if not file['isDirectory']:
                             har_dict[dir_][file['fullPath']] = file['size']
                 except KeyError:
@@ -38,7 +40,7 @@ if __name__ == "__main__":
 
     for k_ in drive_dict:
         print(k_)
-        for k,v in har_dict[k_]:
+        for k,v in har_dict[k_].items():
             path_ = "/volume" + k.replace(k_, drive_dict[k_])
             local_size = os.stat(path_)['st_size']
             if local_size != v:
