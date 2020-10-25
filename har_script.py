@@ -63,8 +63,11 @@ if __name__ == "__main__":
                 year = v
                 local_size = os.stat(local_path).st_size
 
+                print(local_path)
+                print(remote_path)
+
                 try:
-                    remote_size = har_dict[k_][remote_path]
+                    remote_size = har_dict[v][remote_path]
                 except IndexError:
                     pass
                     found = False
