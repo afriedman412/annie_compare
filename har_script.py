@@ -41,7 +41,7 @@ if __name__ == "__main__":
     for k_ in drive_dict:
         print(k_)
         for k,v in har_dict[k_].items():
-            path_ = "/volume" + k.replace(k_, drive_dict[k_])
+            path_ = "/volumes" + k.replace(k_, drive_dict[k_])
             # print(path_)
             try:
                 local_size = os.stat(path_)['st_size']
