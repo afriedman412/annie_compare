@@ -44,7 +44,7 @@ if __name__ == "__main__":
             path_ = "/volumes" + k.replace(k_, drive_dict[k_])
             # print(path_)
             try:
-                local_size = os.stat(path_)['st_size']
+                local_size = os.stat(path_).st_size
                 if local_size != v:
                     print('local:')
                     print(path_, local_size)
