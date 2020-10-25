@@ -33,7 +33,7 @@ if __name__ == "__main__":
     drive_dict = {
     '2018': "WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2",
     '2019': 'WHOS ANNIE_PILOT_08-2019/SHOOT 3',
-    '2020': 'WA0920 main/WHOS ANNIE PILOT'
+    '2020': 'WA0920 main/WHOS ANNIE PILOT/2020'
 }
 
     har_dict = createHarDict()
