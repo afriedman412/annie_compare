@@ -32,55 +32,110 @@ def createHarDict(verbose=False):
 if __name__ == "__main__":
 
     drive_dict = {
-    '2018': "WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2",
-    '2019': 'WHOS ANNIE_PILOT_08-2019/SHOOT 3',
-    '2020': 'WA0920 main/WHOS ANNIE PILOT/2020'
-}
+        '2018': "WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2",
+        '2019': 'WHOS ANNIE_PILOT_08-2019/SHOOT 3',
+        '2020': 'WA0920 main/WHOS ANNIE PILOT/2020'
+    }
+
+    local_dict = {
+        "/volumes/WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2": '2018',
+        "/volumes/WHOS ANNIE_PILOT_08-2019/SHOOT 3": '2019',
+        "/volumes/WA0920 main/WHOS ANNIE PILOT/2020": '2020'
+    }
 
     har_dict = createHarDict()
-    out_list = []
 
-    print('********* NEW RUN **********')
-    for k_ in drive_dict:
-        print(k_)
-        for k,v in har_dict[k_].items():
-            path_ = "/volumes" + k.replace(k_, drive_dict[k_])
-            if k_ == '2018':
-                path_ = path_.replace('RECORDED/', '')
-            # print(path_)
-            size_match = False
-            found = False
-            
-            try:
+    print('********* LOCAL RUN **********')
+    local_list = []
 
-                local_size = os.stat(path_).st_size
-                if local_size == v:
-                    size_match = True
-                print('local:')
-                print(path_, local_size)
-                print('remote:')
-                print(k, v)
+    for k, v in local_dict.items():
+        for root, dirs, files in os.walk(k):
+            for f_ in files:
+                size_match = False
                 found = True
+                remote_size = ''
 
-            except FileNotFoundError:
-                print('file not found: {}'.format(path_))
-                local_size = ''
+                local_path = '/'.join([path, f_])
+                remote_path = local_path.replace(local_dict, v)
+                if v == '2018':
+                    remote_path.replace('AUDIO/', 'AUDIO/RECORDED/')
 
-            listo = {
-                'year': k_,
-                'file_name': path_.split('/')[-1],
-                'local_path': path_,
-                'remote_path': k,
-                'file_found': found,
-                'local_size': local_size,
-                'remote_size': v,
-                'size_match': size_match
-            }
+                year = v
+                local_size = os.stat(local_path).st_size
 
-            out_list.append(listo)
+                try:
+                    remote_size = har_dict[k_][remote_path]
+                except IndexError:
+                    pass
+                    found = False
 
-            print('--')
+                if remote_size == local_size:
+                    size_match = True
+
+                local_list.append({
+                    'year': year,
+                    'file_name': local_path.split('/')[-1],
+                    'local_path': local_path,
+                    'remote_path': remote_path,
+                    'file_found': found,
+                    'local_size': local_size,
+                    'remote_size': remote_size,
+                    'size_match': size_match
+                })
+
 
     print('outputting csv...')
-    pd.DataFrame(out_list).to_csv('sophia_files.csv', index=False)
+    pd.DataFrame(local_list).to_csv('sophia_files_from_da_back.csv', index=False)          
+    print('done')
+
+
+
+                    
+
+
+
+    # print('********* NEW RUN **********')
+    # out_list = []
+    # for k_ in drive_dict:
+    #     print(k_)
+    #     for k,v in har_dict[k_].items():
+    #         path_ = "/volumes" + k.replace(k_, drive_dict[k_])
+    #         if k_ == '2018':
+    #             path_ = path_.replace('RECORDED/', '')
+    #         # print(path_)
+    #         size_match = False
+    #         found = False
+            
+    #         try:
+
+    #             local_size = os.stat(path_).st_size
+    #             if local_size == v:
+    #                 size_match = True
+    #             print('local:')
+    #             print(path_, local_size)
+    #             print('remote:')
+    #             print(k, v)
+    #             found = True
+
+    #         except FileNotFoundError:
+    #             print('file not found: {}'.format(path_))
+    #             local_size = ''
+
+    #         listo = {
+    #             'year': k_,
+    #             'file_name': path_.split('/')[-1],
+    #             'local_path': path_,
+    #             'remote_path': k,
+    #             'file_found': found,
+    #             'local_size': local_size,
+    #             'remote_size': v,
+    #             'size_match': size_match
+    #         }
+
+    #         out_list.append(listo)
+
+    #         print('--')
+
+    # print('outputting csv...')
+    # pd.DataFrame(out_list).to_csv('sophia_files.csv', index=False)
 
