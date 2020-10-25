@@ -31,9 +31,9 @@ def createHarDict(verbose=False):
 if __name__ == "__main__":
 
     drive_dict = {
-    '2018': "/WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2/",
-    '2019': '/WHOS ANNIE_PILOT_08-2019/SHOOT 3/',
-    '2020': '/WA0920 main/WHOS ANNIE PILOT/'
+    '2018': "WHO'S ANNIE PILOT_BACKUP/WHO'S ANNIE-PILOT/SHOOT 2",
+    '2019': 'WHOS ANNIE_PILOT_08-2019/SHOOT 3',
+    '2020': 'WA0920 main/WHOS ANNIE PILOT'
 }
 
     har_dict = createHarDict()
@@ -42,6 +42,7 @@ if __name__ == "__main__":
         print(k_)
         for k,v in har_dict[k_].items():
             path_ = "/volume" + k.replace(k_, drive_dict[k_])
+            # print(path_)
             local_size = os.stat(path_)['st_size']
             if local_size != v:
                 print('local:')
