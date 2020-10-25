@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
                 try:
                     remote_size = har_dict[v][remote_path]
-                except IndexError:
+                except KeyError:
                     pass
                     found = False
 
