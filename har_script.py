@@ -57,7 +57,7 @@ if __name__ == "__main__":
                     remote_size = ''
 
                     local_path = '/'.join([root, f_])
-                    remote_path = local_path.replace(k, v)
+                    remote_path = '/' + local_path.replace(k, v)
                     if v == '2018':
                         remote_path.replace('AUDIO/', 'AUDIO/RECORDED/')
 
