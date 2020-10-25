@@ -38,6 +38,7 @@ if __name__ == "__main__":
 
     har_dict = createHarDict()
 
+    print('********* NEW RUN **********')
     for k_ in drive_dict:
         print(k_)
         for k,v in har_dict[k_].items():
@@ -45,12 +46,13 @@ if __name__ == "__main__":
             # print(path_)
             try:
                 local_size = os.stat(path_).st_size
-                if local_size != v:
-                    print('local:')
-                    print(path_, local_size)
-                    print('remote:')
-                    print(k, v)
-                    print(k, v)
+                # if local_size != v:
+                print('local:')
+                print(path_, local_size)
+                print('remote:')
+                print(k, v)
+
             except FileNotFoundError:
                 print('file not found: {}'.format(path_))
+            print('--')
 
