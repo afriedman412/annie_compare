@@ -1,6 +1,7 @@
 import sys
 import json
 import os
+import pandas as pd
 
 def createHarDict(verbose=False):
     har_dict = {}
@@ -37,6 +38,7 @@ if __name__ == "__main__":
 }
 
     har_dict = createHarDict()
+    out_list = []
 
     print('********* NEW RUN **********')
     for k_ in drive_dict:
@@ -44,6 +46,7 @@ if __name__ == "__main__":
         for k,v in har_dict[k_].items():
             path_ = "/volumes" + k.replace(k_, drive_dict[k_])
             # print(path_)
+            not_found = False
             try:
                 local_size = os.stat(path_).st_size
                 # if local_size != v:
@@ -53,6 +56,23 @@ if __name__ == "__main__":
                 print(k, v)
 
             except FileNotFoundError:
+                not_found = True
                 print('file not found: {}'.format(path_))
+                local_size = ''
+
+            listo = {
+                'year': k_,
+                'file_name': path_.split('/')[-1],
+                'local_path': path_,
+                'remote_path': k,
+                'local_size': local_size,
+                'remote_size': v,
+                'not_found': not_found
+            }
+            out_list.append(listo)
+
             print('--')
+
+    print('outputting csv...')
+    pd.DataFrame(out_list).to_csv('sophia_files.csv', index=False)
 
