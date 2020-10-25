@@ -46,17 +46,21 @@ if __name__ == "__main__":
         for k,v in har_dict[k_].items():
             path_ = "/volumes" + k.replace(k_, drive_dict[k_])
             # print(path_)
-            not_found = False
+            size_match = False
+            found = False
+            
             try:
+
                 local_size = os.stat(path_).st_size
-                # if local_size != v:
+                if local_size == v:
+                    size_match = True
                 print('local:')
                 print(path_, local_size)
                 print('remote:')
                 print(k, v)
+                found = True
 
             except FileNotFoundError:
-                not_found = True
                 print('file not found: {}'.format(path_))
                 local_size = ''
 
@@ -65,10 +69,12 @@ if __name__ == "__main__":
                 'file_name': path_.split('/')[-1],
                 'local_path': path_,
                 'remote_path': k,
+                'file_found': found,
                 'local_size': local_size,
                 'remote_size': v,
-                'not_found': not_found
+                'size_match': size_match
             }
+            
             out_list.append(listo)
 
             print('--')
